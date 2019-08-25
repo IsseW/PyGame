@@ -79,13 +79,19 @@ def simulateBlock(x, y, arr):
                 move = random.choice(POM)
                 arr[x + move][y] = 3 + move
         else:
-            move = random.choice(PO)
-            arr[x + move][y] = 3 + move
+            if value == 2:
+                arr[x][y] = 3
+            else:
+                move = random.choice(PO)
+                arr[x + move][y] = 3 + move
     elif x - 1 >= 0 and world[x - 1][y] == 0 and arr[x - 1][y] == 0:
-        move = random.choice(OM)
-        arr[x + move][y] = 3 + move
+        if value == 4:
+            arr[x][y] = 3
+        else:
+            move = random.choice(OM)
+            arr[x + move][y] = 3 + move
     else:
-        arr[x][y] = 1
+        arr[x][y] = 3
         
 def fill(x, y, value, level=0):
     if level > 2980:
@@ -108,6 +114,9 @@ while not done:
     value = 0
     
     keys = pygame.key.get_pressed()
+
+    
+    
     if keys[pygame.K_LCTRL]:
         value = 1
     else:
@@ -148,6 +157,10 @@ while not done:
     
             
     if simulate:
+        if keys[pygame.K_SPACE]:
+            _x = random.choice(range(width))
+            if world[_x][0] == 0:
+                world[_x][0] = 1
         last = pygame.time.get_ticks()
         world = simulateWorld(world)
         drawWorld()
