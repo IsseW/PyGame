@@ -108,8 +108,7 @@ while not done:
         values, offset = getNext(values, offset)
         draw()
         tick -= 0.0001
-        playerRadius += 0.0001
-        amplitude += 0.0001
+        amplitude += 0.01
         pygame.display.flip()
         
     
