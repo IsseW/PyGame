@@ -38,7 +38,7 @@ screen = pygame.display.set_mode((windowWidth, windowHeight))
 
 def complexFunction(z):
     if z.real == 0 and z.imag == 0: return complex(0, 0)
-    return z**z
+    return z*z
 
 def function(x, y):
     z = complex(x, y)

@@ -48,7 +48,6 @@ def drawTransparentSquare(x, y):
     pygame.gfxdraw.box(screen, (x * xScale, y * yScale, xScale, yScale), TRANSPARENT)
                  
 def drawWorld():
-    screen.blit(rect, (0, 0))
     for x in range(width):
         for y in range(height):
             if world[x][y] < 0:
@@ -65,12 +64,45 @@ def simulateWorld(world):
             elif world[x][y] < 0:
                 newWorld[x][y] = -1
     return newWorld
+
+#assume x and y is in array
+def IsFree(x, y, arr):
+    return (arr[x][y] == 0 or arr[x][y] == 5) and (world[x][y] == 0 or world[x][y] == 5)
+
 def simulateBlock(x, y, arr):
     value = world[x][y]
-    if y + 1 < height and world[x][y + 1] == 0 and arr[x][y + 1] == 0:
+    if value == 5: return
+    
+    #Free
+    down = y + 1 < height and IsFree(x, y + 1, arr)
+    up = y - 1 >= 0 and IsFree(x, y - 1, arr)
+    right = x + 1 < width and IsFree(x + 1, y, arr)
+    left = x - 1 >= 0 and IsFree(x - 1, y, arr)
+
+    downdown = down and y + 2 < height and IsFree(x, y + 2, arr)
+    rightright = right and x + 2 < width and IsFree(x + 2, y, arr)
+    leftleft = left and x - 2 >= 0 and IsFree(x - 2, y, arr)
+    
+    close = 0
+    if not down: close+=1
+    if not up: close+=1
+    if not right: close+=1
+    if not left: close+=1
+    
+    if not up and downdown:
+        arr[x][y + 1] = 5
+        arr[x][y + 2] = 1
+    elif down:
         arr[x][y + 1] = 1
-    elif x + 1 < width and world[x + 1][y] == 0 and arr[x + 1][y] == 0:
-        if x - 1 >= 0 and world[x - 1][y] == 0 and arr[x - 1][y] == 0:
+    elif (rightright or leftleft) and close >= 2 and random.choice(POM) < close - 2:
+        if rightright:
+            arr[x + 1][y] = 5
+            arr[x + 2][y] = 4
+        elif leftleft:
+            arr[x - 1][y] = 5
+            arr[x - 2][y] = 2
+    elif right:
+        if left:
             if value == 2:
                 arr[x - 1][y] = 2
             elif value == 4:
@@ -84,7 +116,7 @@ def simulateBlock(x, y, arr):
             else:
                 move = random.choice(PO)
                 arr[x + move][y] = 3 + move
-    elif x - 1 >= 0 and world[x - 1][y] == 0 and arr[x - 1][y] == 0:
+    elif left:
         if value == 4:
             arr[x][y] = 3
         else:
@@ -109,6 +141,7 @@ def fill(x, y, value, level=0):
 done = False
 last = 0
 tick = 10
+blitLast = False
 while not done:
 
     value = 0
@@ -163,8 +196,16 @@ while not done:
                 world[_x][0] = 1
         last = pygame.time.get_ticks()
         world = simulateWorld(world)
+        if not blitLast:
+            screen.blit(rect, (0, 0))
+            blitLast = True
+        else:
+            blitLast = False
         drawWorld()
         pygame.display.flip()
+        
+pygame.display.quit()
+pygame.quit()
         
         
     
