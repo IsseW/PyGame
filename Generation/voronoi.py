@@ -28,14 +28,17 @@ def GetColor(position, distance, cell):
     return [255 * t, 255 * t1, 255 * t2]
 
 def DistanceSq(p1, p2):
-    
+    """
     p = ((abs(p1[0] - p2[0])), abs(p1[1] - p2[1]))
 
     #d = p[0] * p[0] + 2 * p[0] * p[1] + p[1] * p[1]
     d1 = p[1] * p[1]
     d2 = p[0] * p[0]
     d = 2 * d1 + 2 * d2 + 2 * p[0] * p[1]
-    return d
+    """
+    p = (p1[0] - p2[0], p1[1] - p2[1])
+    
+    return p[0] * p[0] + p[1] * p[1] 
 
 def GenerateVoronoi(points, imageSize):
     img = np.zeros((imageSize,imageSize,3), np.uint8)

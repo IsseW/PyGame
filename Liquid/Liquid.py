@@ -148,8 +148,6 @@ while not done:
     
     keys = pygame.key.get_pressed()
 
-    
-    
     if keys[pygame.K_LCTRL]:
         value = 1
     else:
@@ -188,7 +186,6 @@ while not done:
                             world[x][y] = 0
     
     
-            
     if simulate:
         if keys[pygame.K_SPACE]:
             _x = random.choice(range(width))

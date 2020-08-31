@@ -63,13 +63,13 @@ def drawPoints(img, points, radius, color = [255, 255, 255]):
     print("points drawn")
     
 
-size = (4000, 4000)
+size = (300, 300)
 
 bigRadius = 2
-bigRadius2 = 100
+bigRadius2 = 50
 
 smallRadius = 1
-smallRadius2 = 50
+smallRadius2 = 30
 
 big = generatePoints(bigRadius2, size)
 small = generatePoints(smallRadius2, size)
